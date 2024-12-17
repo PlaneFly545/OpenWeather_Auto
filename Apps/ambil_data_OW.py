@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from datetime import datetime, timedelta
 import os
+import time
 
 # Konfigurasi API dan lokasi
 API_KEY = 'e6b915aa2e053071d457d47bbfa031b1'
@@ -10,7 +11,7 @@ LON = 106.63
 URL = f'https://api.openweathermap.org/data/2.5/weather?lat={LAT}&lon={LON}&appid={API_KEY}&units=metric'
 
 # Path file Excel
-FILE_PATH = r"C:\Tugas_Statistika\Data\Bahan_Latihan_Model\data_harian_OP.xlsx"
+FILE_PATH = r"./Data/data_harian_OP.xlsx"
 
 # Fungsi untuk mengambil data dari API
 def fetch_weather_data():
@@ -54,13 +55,17 @@ def save_to_excel(data, file_path=FILE_PATH):
         updated_data.to_excel(file_path, index=False, sheet_name='Data Cuaca')
         print(f"Data berhasil ditambahkan ke file {file_path}.")
 
-# Main Program
+# Main Program dengan interval 2 menit
 if __name__ == "__main__":
-    print("Mengambil data cuaca...")
-    weather_data = fetch_weather_data()
-    if weather_data:
-        print("Data berhasil diambil:")
-        print(weather_data)
-        save_to_excel(weather_data)
-    else:
-        print("Gagal mengambil data cuaca.")
+    print("Memulai pengambilan data cuaca setiap 2 menit...")
+    while True:
+        weather_data = fetch_weather_data()
+        if weather_data:
+            print(f"Data berhasil diambil pada {weather_data['tanggal']}")
+            print(weather_data)
+            save_to_excel(weather_data)
+        else:
+            print("Gagal mengambil data cuaca.")
+        
+        # Tunggu selama 2 menit sebelum iterasi berikutnya
+        time.sleep(120)
