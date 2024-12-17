@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os
 import time
 
@@ -23,8 +23,8 @@ def fetch_weather_data():
             kelembapan = data['main']['humidity']
             kecepatan_angin = data['wind']['speed']
             
-            # Waktu diubah ke UTC+7
-            waktu_utc = datetime.utcnow() + timedelta(hours=7)
+            # Waktu UTC+7 menggunakan timezone-aware datetime
+            waktu_utc = datetime.now(timezone.utc) + timedelta(hours=7)
             waktu_str = waktu_utc.strftime('%Y-%m-%d %H:%M:%S')
             
             return {
