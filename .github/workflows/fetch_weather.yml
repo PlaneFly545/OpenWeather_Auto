@@ -1,0 +1,26 @@
+name: Fetch Weather Data
+
+on:
+  schedule:
+    - cron: "*/2 * * * *"  # Menjalankan skrip setiap 2 menit
+  workflow_dispatch:       # Bisa dijalankan manual
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  # Mengambil kode dari repositori
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"  # Versi Python
+
+      - name: Install dependencies
+        run: |
+          pip install pandas openpyxl requests
+
+      - name: Run weather data script
+        run: python Apps/ambil_data_OW.py
